@@ -1,6 +1,5 @@
 pandas
 yfinance
 openai
-python-telegram-bot
 requests
 ta
