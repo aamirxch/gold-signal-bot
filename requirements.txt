@@ -3,3 +3,4 @@ yfinance
 openai
 requests
 ta
+flask
