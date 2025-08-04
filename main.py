@@ -62,3 +62,16 @@ def start_flask():
 if __name__ == '__main__':
     threading.Thread(target=start_flask).start()
     run_bot()
+
+    print("✅ Debug: Bot is starting")
+    print("BOT_TOKEN:", BOT_TOKEN)
+    print("CHAT_ID:", CHAT_ID)
+    print("FINNHUB_API_KEY:", FINNHUB_API_KEY)
+
+    # 1. Notify startup
+    send_telegram_message("✅ Gold Signal Bot has started and is running!")
+
+    # 2. Get and send real-time gold price
+    gold_price_message = get_gold_price()
+    print("📊 Gold price message:", gold_price_message)
+    send_telegram_message(gold_price_message)
