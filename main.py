@@ -35,7 +35,7 @@ def get_gold_price():
             low = data['l']
             return f"🟡 Gold Price (XAUUSD)\nCurrent: ${current}\nHigh: ${high}\nLow: ${low}"
         else:
-            return "❌ Failed to fetch gold price."
+            return f"❌ Finnhub response error: {data}"
     except Exception as e:
         return f"❌ Error fetching gold price: {str(e)}"
 
