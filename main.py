@@ -64,9 +64,10 @@ if __name__ == '__main__':
     run_bot()
 
     print("✅ Debug: Bot is starting")
-    print("BOT_TOKEN:", BOT_TOKEN)
-    print("CHAT_ID:", CHAT_ID)
-    print("FINNHUB_API_KEY:", FINNHUB_API_KEY)
+    print("BOT_TOKEN: [HIDDEN]")
+    print("CHAT_ID: [HIDDEN]")
+    print("FINNHUB_API_KEY: [HIDDEN]")
+
 
     # 1. Notify startup
     send_telegram_message("✅ Gold Signal Bot has started and is running!")
