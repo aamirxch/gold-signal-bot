@@ -25,7 +25,7 @@ def send_telegram_message(message):
 # === Gold Price Fetch using yfinance ===
 def get_gold_price():
     try:
-        data = yf.download("XAUUSD=X", period="1d", interval="1m")
+        data = yf.download("GC=F", period="1d", interval="1m")
         last = data.iloc[-1]
         close_price = last['Close']
         high_price = last['High']
