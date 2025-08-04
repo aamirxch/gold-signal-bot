@@ -25,19 +25,28 @@ def send_telegram_message(message):
 # === Gold Price Fetch from Finnhub ===
 def get_gold_price():
     try:
-        url = f"https://finnhub.io/api/v1/quote?symbol=OANDA:XAUUSD&token={FINNHUB_API_KEY}"
+        url = f"https://finnhub.io/api/v1/quote?symbol=OANDA:XAU_USD&token={FINNHUB_API_KEY}"
         response = requests.get(url)
         data = response.json()
 
-        if 'c' in data:
-            current = data['c']
-            high = data['h']
-            low = data['l']
-            return f"🟡 Gold Price (XAUUSD)\nCurrent: ${current}\nHigh: ${high}\nLow: ${low}"
-        else:
+        if 'c' not in data:
             return f"❌ Finnhub response error: {data}"
+
+        current_price = data['c']
+        high_price = data['h']
+        low_price = data['l']
+        open_price = data['o']
+        prev_close = data['pc']
+
+        return (
+            f"📊 XAU/USD (Gold)\n"
+            f"Price: ${current_price:.2f}\n"
+            f"High: ${high_price:.2f}, Low: ${low_price:.2f}\n"
+            f"Open: ${open_price:.2f}, Prev Close: ${prev_close:.2f}"
+        )
     except Exception as e:
         return f"❌ Error fetching gold price: {str(e)}"
+
 
 # === Main Bot Logic ===
 def run_bot():
