@@ -4,3 +4,4 @@ openai
 requests
 ta
 flask
+finnhub
