@@ -23,14 +23,16 @@ def send_telegram_message(message):
         return None
 
 # === Gold Price Fetch from Finnhub ===
+import yfinance as yf
+
 def get_gold_price():
     try:
-        url = f"https://finnhub.io/api/v1/quote?symbol=OANDA:XAU_USD&token={FINNHUB_API_KEY}"
-        response = requests.get(url)
-        data = response.json()
+        data = yf.download("XAUUSD=X", period="1d", interval="1m")
+        last = data.iloc[-1]
+        return f"Gold Price: ${last['Close']:.2f} (updated)"
+    except Exception as e:
+        return f"❌ Error fetching gold price: {str(e)}"
 
-        if 'c' not in data:
-            return f"❌ Finnhub response error: {data}"
 
         current_price = data['c']
         high_price = data['h']
