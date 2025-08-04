@@ -2,11 +2,11 @@ import os
 import requests
 import threading
 from flask import Flask
+import yfinance as yf
 
 # === Environment Variables from Render Dashboard ===
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
-FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 
 # === Telegram Messaging Function ===
 def send_telegram_message(message):
@@ -22,41 +22,34 @@ def send_telegram_message(message):
         print(f"❌ Telegram error: {str(e)}")
         return None
 
-# === Gold Price Fetch from Finnhub ===
-import yfinance as yf
-
+# === Gold Price Fetch using yfinance ===
 def get_gold_price():
     try:
         data = yf.download("XAUUSD=X", period="1d", interval="1m")
         last = data.iloc[-1]
-        return f"Gold Price: ${last['Close']:.2f} (updated)"
-    except Exception as e:
-        return f"❌ Error fetching gold price: {str(e)}"
-
-
-        current_price = data['c']
-        high_price = data['h']
-        low_price = data['l']
-        open_price = data['o']
-        prev_close = data['pc']
+        close_price = last['Close']
+        high_price = last['High']
+        low_price = last['Low']
+        open_price = last['Open']
 
         return (
             f"📊 XAU/USD (Gold)\n"
-            f"Price: ${current_price:.2f}\n"
+            f"Price: ${close_price:.2f}\n"
             f"High: ${high_price:.2f}, Low: ${low_price:.2f}\n"
-            f"Open: ${open_price:.2f}, Prev Close: ${prev_close:.2f}"
+            f"Open: ${open_price:.2f}"
         )
     except Exception as e:
         return f"❌ Error fetching gold price: {str(e)}"
 
-
 # === Main Bot Logic ===
 def run_bot():
-    # 1. Notify startup
-    send_telegram_message("✅ Gold Signal Bot has started and is running!")
+    print("✅ Debug: Bot is starting")
+    print("BOT_TOKEN: [HIDDEN]")
+    print("CHAT_ID: [HIDDEN]")
 
-    # 2. Get and send real-time gold price
+    send_telegram_message("✅ Gold Signal Bot has started and is running!")
     gold_price_message = get_gold_price()
+    print("📊 Gold price message:", gold_price_message)
     send_telegram_message(gold_price_message)
 
 # === Flask App to Keep Server Alive ===
@@ -73,17 +66,3 @@ def start_flask():
 if __name__ == '__main__':
     threading.Thread(target=start_flask).start()
     run_bot()
-
-    print("✅ Debug: Bot is starting")
-    print("BOT_TOKEN: [HIDDEN]")
-    print("CHAT_ID: [HIDDEN]")
-    print("FINNHUB_API_KEY: [HIDDEN]")
-
-
-    # 1. Notify startup
-    send_telegram_message("✅ Gold Signal Bot has started and is running!")
-
-    # 2. Get and send real-time gold price
-    gold_price_message = get_gold_price()
-    print("📊 Gold price message:", gold_price_message)
-    send_telegram_message(gold_price_message)
